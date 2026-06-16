@@ -1,0 +1,38 @@
+identityAllocationMode: crd
+kubeProxyReplacement: true
+routingMode: tunnel
+
+k8sServiceHost: patata-bollente-kind-control-plane
+k8sServicePort: 6443
+
+ipam:
+  mode: cluster-pool
+
+bpf:
+  masquerade: true
+  disableChecksumOffloading: true
+
+operator:
+  replicas: 1
+
+ingressController:
+  enabled: false
+
+hubble:
+  enabled: true
+  metrics:
+    enabled:
+      - dns
+      - drop
+      - tcp
+      - flow
+      - icmp
+      - http
+  relay:
+    enabled: true
+  ui:
+    enabled: true
+    backend:
+      replicas: 1
+    frontend:
+      replicas: 1

@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://default.svc   
+    namespace: argocd
+  sources:
+    - repoURL: https://github.io  
+      chart: argo-cd
+      targetRevision: 7.3.11  
+      ref: chart-ufficiale
+    - repoURL: https://github.com/AndreaFabioGrossi/Patata-Bollente.git
+      targetRevision: HEAD
+      path: argocd
+      helm:
+        valueFiles:
+          - $chart-ufficiale/values.yaml
+          - values.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
