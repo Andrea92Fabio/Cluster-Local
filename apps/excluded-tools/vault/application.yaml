@@ -1,23 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cilium
+  name: vault
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "-5"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   project: default
   destination:
     server: https://kubernetes.default.svc
-    namespace: kube-system
+    namespace: vault
   sources:
-    - repoURL: oci://quay.io/cilium/charts
-      chart: cilium
-      targetRevision: 1.19.4
+    - repoURL: https://helm.releases.hashicorp.com
+      chart: vault
+      targetRevision: 0.28.1
       ref: chart-ufficiale
     - repoURL: https://github.com/AndreaFabioGrossi/Patata-Bollente.git
       targetRevision: HEAD
-      path: apps/cilium
+      path: apps/vault
       helm:
         valueFiles:
           - $chart-ufficiale/values.yaml
@@ -26,3 +26,5 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

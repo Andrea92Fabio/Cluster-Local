@@ -1,0 +1,55 @@
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: "longhorn"
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 20Gi
+
+grafana:
+  admin:
+    existingSecret: "grafana-vault-secret"
+    userKey: "admin-user"
+    passwordKey: "admin-password"
+  persistence:
+    enabled: true
+    storageClassName: "longhorn"
+    size: 10Gi
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    hosts:
+      - grafana.local
+    path: /
+
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: 'default'
+          orgId: 1
+          folder: ''
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/default
+
+  dashboards:
+    default:
+      k8s-cluster-rsrc:
+        gnetId: 15729
+        revision: 1
+        datasource: Prometheus
+      longhorn:
+        gnetId: 13032
+        revision: 1
+        datasource: Prometheus
+      nvidia-gpu:
+        gnetId: 12239
+        revision: 2
+        datasource: Prometheus

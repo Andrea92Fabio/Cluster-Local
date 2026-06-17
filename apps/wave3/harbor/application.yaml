@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: harbor
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: harbor
+  sources:
+    - repoURL: https://helm.goharbor.io
+      chart: harbor
+      targetRevision: 1.16.0
+      ref: chart-ufficiale
+    - repoURL: https://github.com/AndreaFabioGrossi/Patata-Bollente.git
+      targetRevision: HEAD
+      path: apps/harbor
+      helm:
+        valueFiles:
+          - $chart-ufficiale/values.yaml
+          - values.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

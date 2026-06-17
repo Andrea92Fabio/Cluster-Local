@@ -1,21 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd
+  name: cilium
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
 spec:
   project: default
   destination:
-    server: https://default.svc   
-    namespace: argocd
+    server: https://kubernetes.default.svc
+    namespace: kube-system
   sources:
-    - repoURL: https://github.io  
-      chart: argo-cd
-      targetRevision: 7.3.11  
+    - repoURL: oci://quay.io/cilium/charts
+      chart: cilium
+      targetRevision: 1.19.4
       ref: chart-ufficiale
-    - repoURL: https://github.com/AndreaFabioGrossi/Patata-Bollente.git
+    - repoURL: https://github.com/Andrea92Fabio/Cluster-Local.git
       targetRevision: HEAD
-      path: argocd
+      path: apps/cilium
       helm:
         valueFiles:
           - $chart-ufficiale/values.yaml

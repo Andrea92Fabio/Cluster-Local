@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: keycloak
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: keycloak
+  sources:
+    - repoURL: https://github.com/AndreaFabioGrossi/Patata-Bollente.git
+      targetRevision: HEAD
+      path: apps/keyclock
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,22 @@
+# Configurazione del Primary Node
+primary:
+  replicaCount: 1
+  
+  # Credenziali da un Secret esterno
+  auth:
+    username: andrea
+    database: patata_db
+    existingSecret: "postgresql-external-secret"
+    secretKeys:
+      userPasswordKey: "password"
+
+  persistence:
+    enabled: true
+    size: 8Gi
+    storageClass: "longhorn"
+
+readReplicas:
+  replicaCount: 0
+
+metrics:
+  enabled: false

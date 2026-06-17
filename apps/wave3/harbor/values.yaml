@@ -1,0 +1,25 @@
+expose:
+  type: clusterIP 
+  tls:
+    enabled: false
+
+externalURL: http://harbor.local
+
+persistence:
+  enabled: true
+  persistentVolumeClaim:
+    registry:
+      storageClass: "longhorn" 
+      size: 10Gi
+    chartmuseum:
+      storageClass: "longhorn"
+      size: 5Gi
+    jobservice:
+      storageClass: "longhorn"
+      size: 1Gi
+    database:
+      storageClass: "longhorn"
+      size: 5Gi
+    redis:
+      storageClass: "longhorn"
+      size: 1Gi

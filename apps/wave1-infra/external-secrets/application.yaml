@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: external-secrets
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: external-secrets
+  sources:
+    - repoURL: https://chart.external-secrets.io
+      chart: external-secrets
+      targetRevision: 0.9.11
+      ref: chart-ufficiale
+    - repoURL: https://github.com/AndreaFabioGrossi/Patata-Bollente.git
+      targetRevision: HEAD
+      path: bootstrap/external-secrets-crd
+      helm:
+        valueFiles:
+          - $chart-ufficiale/values.yaml
+          - values.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

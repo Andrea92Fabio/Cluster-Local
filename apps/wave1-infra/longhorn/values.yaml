@@ -1,0 +1,16 @@
+ingress:
+  enable: false
+
+persistence:
+  defaultClass: true
+  defaultClassReplicaCount: 1
+csi:
+  kubeletRootDir: /var/lib/kubelet
+
+defaultSettings:
+  replicaSoftAntiAffinity: "true"
+  storageOverProvisioningPercentage: 500
+  logLevel: warn
+
+  replicaAutoBalance: "best-effort"
+  defaultDataPath: /var/lib/longhorn

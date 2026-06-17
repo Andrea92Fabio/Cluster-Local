@@ -1,44 +1,41 @@
 apiVersion: kind.x-k8s.io/v1alpha4
 kind: Cluster
-name: patata-bollente-kind
+name: cluster-local # Conviene usare il minuscolo per convenzione Kubernetes
 
 # 1. Disattiva la rete standard di KinD per far funzionare Cilium
 networking:
   disableDefaultCNI: true
   kubeProxyMode: "none"  
 
-# 2. Struttura dei Nodi (1 Master + 3 Worker per Longhorn HA)
+# 2. Struttura dei Nodi (1 Control-Plane + 1 Worker)
 nodes:
 - role: control-plane
   image: kindest/node:v1.31.2@sha256:18fbefc20a7113353c7b75b5c869d7145a6abd6269154825872dc59c1329912e
-  kubeadmConfigPatches:
-  - |
-    kind: InitConfiguration
-    nodeRegistration:
-      kubeletExtraArgs:
-        node-labels: "ingress-ready=true"
+
+- role: worker
+  image: kindest/node:v1.31.2@sha256:18fbefc20a7113353c7b75b5c869d7145a6abd6269154825872dc59c1329912e
+  # Indentazione corretta rispetto a prima:
   extraPortMappings:
-  - containerPort: 80
-    hostPort: 80
+  - containerPort: 30080 # La porta su cui Traefik ascolterà nel cluster (HTTP)
+    hostPort: 80         # La porta del tuo PC
     protocol: TCP
-  - containerPort: 443
-    hostPort: 443
+  - containerPort: 30443 # La porta su cui Traefik ascolterà nel cluster (HTTPS)
+    hostPort: 443        # La porta del tuo PC
     protocol: TCP
+    
+#   image: kindest/node:v1.31.2@sha256:18fbefc20a7113353c7b75b5c869d7145a6abd6269154825872dc59c1329912e
+#   extraMounts:
+#   - hostPath: ./data/worker1
+#     containerPath: /var/lib/longhorn
 
-- role: worker
-  image: kindest/node:v1.31.2@sha256:18fbefc20a7113353c7b75b5c869d7145a6abd6269154825872dc59c1329912e
-  extraMounts:
-  - hostPath: ./data/worker1
-    containerPath: /var/lib/longhorn
+# - role: worker
+#   image: kindest/node:v1.31.2@sha256:18fbefc20a7113353c7b75b5c869d7145a6abd6269154825872dc59c1329912e
+#   extraMounts:
+#   - hostPath: ./data/worker2
+#     containerPath: /var/lib/longhorn
 
-- role: worker
-  image: kindest/node:v1.31.2@sha256:18fbefc20a7113353c7b75b5c869d7145a6abd6269154825872dc59c1329912e
-  extraMounts:
-  - hostPath: ./data/worker2
-    containerPath: /var/lib/longhorn
-
-- role: worker
-  image: kindest/node:v1.31.2@sha256:18fbefc20a7113353c7b75b5c869d7145a6abd6269154825872dc59c1329912e
-  extraMounts:
-  - hostPath: ./data/worker3
-    containerPath: /var/lib/longhorn
+# - role: worker
+#   image: kindest/node:v1.31.2@sha256:18fbefc20a7113353c7b75b5c869d7145a6abd6269154825872dc59c1329912e
+#   extraMounts:
+#   - hostPath: ./data/worker3
+#     containerPath: /var/lib/longhorn

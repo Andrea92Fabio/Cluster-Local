@@ -1,0 +1,48 @@
+# Ottimizzazione delle risorse per il cluster locale (Evita sprechi di RAM/CPU)
+deployment:
+  kind: Deployment
+  replicas: 1
+
+nodesSelector:
+  ingress-ready: "true"
+
+# Configurazione globale dei punti di ingresso (EntryPoints)
+ports:
+  web:
+    port: 8000
+    hostPort: 80
+    exposedPort: 80
+    expose:
+      default: true
+    nodePort: 30080
+    protocol: TCP
+
+  websecure:
+    port: 8443
+    hostPort: 443
+    exposedPort: 443
+    expose:
+      default: true
+    nodePort: 30443
+    protocol: TCP
+    # Configurazione TLS di base nativa per Traefik
+    tls:
+      enabled: false
+# Configurazione del Servizio Kubernetes per esporre Traefik sul Mac
+service:
+  enabled: true
+  type: NodePort
+
+# Argomenti statici per attivare i Ingress standard di Kubernetes
+additionalArguments:
+  - "--providers.kubernetesingress=true"
+  - "--providers.kubernetesingress.ingressclass=traefik"
+
+logs:
+  general:
+    level: INFO
+  access:
+    enabled: false
+
+# Disabilita l'invio di statistiche anonime a Traefik
+globalArguments: []

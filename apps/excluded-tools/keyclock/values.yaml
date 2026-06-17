@@ -1,0 +1,17 @@
+replicaCount: 1
+production: false
+proxy: edge
+
+service:
+  type: ClusterIP
+
+postgresql:
+  enabled: false
+
+externalDatabase:
+  host: postgresql.database.svc.cluster.local
+  port: 5432
+  user: andrea
+  database: patata_db
+  existingSecret: "keycloak-db-secret"         
+  existingSecretPasswordKey: "db-password"    

@@ -2,7 +2,7 @@ identityAllocationMode: crd
 kubeProxyReplacement: true
 routingMode: tunnel
 
-k8sServiceHost: patata-bollente-kind-control-plane
+k8sServiceHost: Cluster-Local-control-plane
 k8sServicePort: 6443
 
 ipam:
