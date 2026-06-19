@@ -18,7 +18,8 @@ help:
 up:
 	@echo "[Fase 1/4] Creazione del cluster KinD '$(CLUSTER_NAME)' usando $(KIND_CONFIG)..."
 	kind create cluster --name $(CLUSTER_NAME) --config $(KIND_CONFIG)
-	
+	@sleep 3
+
 	@echo "[Fase 2/4] Installazione di Cilium CNI usando $(CILIUM_VALUES)..."
 	# Estrazione dinamica dell'IP del Control-Plane (necessario per KinD + Cilium senza kube-proxy)
 	$(eval API_SERVER_IP=$(shell docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(CLUSTER_NAME)-control-plane))

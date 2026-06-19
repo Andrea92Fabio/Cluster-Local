@@ -1,5 +1,5 @@
 identityAllocationMode: crd
-kubeProxyReplacement: strict
+kubeProxyReplacement: true
 routingMode: tunnel
 
 k8sServiceHost: cluster-local-1-control-plane 
