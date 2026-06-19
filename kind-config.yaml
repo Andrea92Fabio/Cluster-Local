@@ -25,16 +25,16 @@ nodes:
   - hostPath: ./data/worker1
     containerPath: /var/lib/longhorn
 
-# Worker 2: Necessario per il quorum/replica di Longhorn
-- role: worker
-  image: kindest/node:v1.31.2@sha256:18fbefc20a7113353c7b75b5c869d7145a6abd6269154825872dc59c1329912e
-  extraMounts:
-  - hostPath: ./data/worker2
-    containerPath: /var/lib/longhorn
+# # Worker 2: Necessario per il quorum/replica di Longhorn
+# - role: worker
+#   image: kindest/node:v1.31.2@sha256:18fbefc20a7113353c7b75b5c869d7145a6abd6269154825872dc59c1329912e
+#   extraMounts:
+#   - hostPath: ./data/worker2
+#     containerPath: /var/lib/longhorn
 
-# Worker 3: Necessario per il quorum/replica di Longhorn
-- role: worker
-  image: kindest/node:v1.31.2@sha256:18fbefc20a7113353c7b75b5c869d7145a6abd6269154825872dc59c1329912e
-  extraMounts:
-  - hostPath: ./data/worker3
-    containerPath: /var/lib/longhorn
+# # Worker 3: Necessario per il quorum/replica di Longhorn
+# - role: worker
+#   image: kindest/node:v1.31.2@sha256:18fbefc20a7113353c7b75b5c869d7145a6abd6269154825872dc59c1329912e
+#   extraMounts:
+#   - hostPath: ./data/worker3
+#     containerPath: /var/lib/longhorn

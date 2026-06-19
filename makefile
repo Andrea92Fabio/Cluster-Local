@@ -18,38 +18,36 @@ help:
 up:
 	@echo "[Fase 1/4] Creazione del cluster KinD '$(CLUSTER_NAME)' usando $(KIND_CONFIG)..."
 	kind create cluster --name $(CLUSTER_NAME) --config $(KIND_CONFIG)
-	@sleep 3
 
 	@echo "[Fase 2/4] Installazione di Cilium CNI usando $(CILIUM_VALUES)..."
-	# Estrazione dell'IP dinamico direttamente in una variabile di shell (VALUTAZIONE PURE BASH)
 	@API_SERVER_IP=$$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(CLUSTER_NAME)-control-plane); \
 	echo "Control-Plane IP rilevato: $$API_SERVER_IP"; \
-	
 	helm upgrade --install cilium oci://quay.io/cilium/charts/cilium \
 		--version 1.19.4 \
 		--namespace kube-system \
-		-f cilium/values.yaml \
+		-f $(CILIUM_VALUES) \
 		--set k8sServiceHost=$$API_SERVER_IP \
 		--set k8sServicePort=6443 \
-		--kube-context kind-$(CLUSTER_NAME)
-	
+		--kube-context $(CTX)
+
 	@echo "Attesa che i nodi diventino Ready grazie a Cilium..."
 	kubectl wait --for=condition=Ready nodes --all --timeout=90s --context $(CTX)
-	
+
 	@echo "[Fase 3/4] Installazione di ArgoCD usando $(ARGOCD_VALUES)..."
-	helm upgrade --install argocd oci://ghcr.io/argoproj/argo-helm/argo-cd \
+	helm upgrade --install argocd oci://ghcr.io/argoproj/argo-helm \
+		--chart argo-cd \
+		--version 7.3.11 \
 		--namespace argocd --create-namespace \
 		-f $(ARGOCD_VALUES) \
 		--kube-context $(CTX)
-	
+
 	@echo "Attesa che il server di ArgoCD sia pronto..."
 	kubectl wait --namespace argocd --for=condition=available deployment/argocd-server --timeout=90s --context $(CTX)
 	@sleep 5
-	
+
 	@echo "⚓ [Fase 4/4] Applicazione della Root App GitOps ($(ROOT_APP))..."
-	# Questo file attiverà la sincronizzazione a catena di tutti gli altri tool (Harbor, Longhorn, Traefik, ecc.)
 	kubectl apply -f $(ROOT_APP) --context $(CTX)
-	@echo "\n Infrastruttura avviata! ArgoCD deve sincronizzare il resto del Data Center."
+	@echo "\nInfrastruttura avviata! ArgoCD deve sincronizzare il resto del Data Center."
 
 down:
 	@echo "Rimozione del cluster KinD '$(CLUSTER_NAME)'..."
@@ -76,3 +74,4 @@ port-grafana:
 port-harbor:
 	@echo "Harbor accessibile su: http://localhost:8081"
 	kubectl port-forward svc/harbor -n harbor 8081:80 --context $(CTX)
+	
