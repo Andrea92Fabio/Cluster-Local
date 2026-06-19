@@ -7,14 +7,14 @@ spec:
   project: default
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: argocd # Spazio dove risiede il controller di Argo
   source:
     repoURL: https://github.com/Andrea92Fabio/Cluster-Local.git
     targetRevision: HEAD
-    path: apps
+    path: apps # Assicurati che i tool siano dentro questa cartella nel repository!
     directory:
       recurse: true
-      exclude: '**/kustomization.yaml'
+      include: '**/application.yaml'
   syncPolicy:
     automated:
       prune: true

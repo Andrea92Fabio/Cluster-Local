@@ -1,29 +1,30 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd
+  name: cert-manager
   namespace: argocd
+  annotations:
+    # Wave 1: deve partire subito dopo l'Ingress Controller (Traefik che è a wave 0)
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
   destination:
-    server: https://kubernetes.default.svc   
-    namespace: argocd
-
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
   sources:
-    - repoURL: oci://ghcr.io/argoproj/argo-helm
-      chart: argo-cd
-      targetRevision: 7.3.11  
+    - repoURL: https://charts.jetstack.io
+      chart: cert-manager
+      targetRevision: v1.14.4
       ref: chart-ufficiale
-      
     - repoURL: https://github.com/Andrea92Fabio/Cluster-Local.git
       targetRevision: HEAD
-      path: argocd
+      path: apps/cert-manager
       helm:
         valueFiles:
           - $chart-ufficiale/values.yaml
           - values.yaml
-
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    createNamespace: true

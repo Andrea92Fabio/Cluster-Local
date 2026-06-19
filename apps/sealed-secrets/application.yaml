@@ -1,23 +1,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cilium
+  name: sealed-secrets
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "-5" # Viene eseguito prima delle altre app nella cartella apps
+    # Wave 1: pronto insieme agli altri sistemi di sicurezza prima dei database o applicativi
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
   destination:
     server: https://kubernetes.default.svc
-    namespace: kube-system
+    namespace: kube-system # Di solito si installa in kube-system o in un suo namespace dedicato
   sources:
-    - repoURL: oci://quay.io/cilium/charts
-      chart: cilium
-      targetRevision: 1.19.4
+    - repoURL: https://bitnami-labs.github.io/sealed-secrets
+      chart: sealed-secrets
+      targetRevision: 2.15.0
       ref: chart-ufficiale
     - repoURL: https://github.com/Andrea92Fabio/Cluster-Local.git
       targetRevision: HEAD
-      path: apps/cilium
+      path: apps/sealed-secrets
       helm:
         valueFiles:
           - $chart-ufficiale/values.yaml

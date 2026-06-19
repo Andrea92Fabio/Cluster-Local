@@ -1,0 +1,53 @@
+expose:
+  type: ingress
+  ingress:
+    hosts:
+      core: harbor.local
+    controller: traefik
+    className: traefik
+
+externalURL: http://harbor.local
+
+# Persistenza tramite i volumi locali di Longhorn
+persistence:
+  enabled: true
+  persistentVolumeClaim:
+    registry:
+      storageClass: longhorn
+      size: 10Gi
+    chartmuseum:
+      storageClass: longhorn
+      size: 5Gi
+    jobservice:
+      storageClass: longhorn
+      size: 1Gi
+    database:
+      storageClass: longhorn
+      size: 2Gi
+    redis:
+      storageClass: longhorn
+      size: 1Gi
+
+# Portiamo a 1 le repliche di ogni sotto-servizio interno di Harbor
+portal:
+  replicaCount: 1
+core:
+  replicaCount: 1
+jobservice:
+  replicaCount: 1
+registry:
+  registry:
+    replicaCount: 1
+chartmuseum:
+  replicaCount: 1
+database:
+  internal:
+    resources:
+      limits:
+        memory: "256Mi"
+redis:
+  internal:
+    resources:
+      limits:
+        memory: "128Mi"
+        

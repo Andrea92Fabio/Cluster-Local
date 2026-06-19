@@ -1,29 +1,29 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd
+  name: traefik
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   project: default
   destination:
-    server: https://kubernetes.default.svc   
-    namespace: argocd
-
+    server: https://kubernetes.default.svc
+    namespace: traefik
   sources:
-    - repoURL: oci://ghcr.io/argoproj/argo-helm
-      chart: argo-cd
-      targetRevision: 7.3.11  
+    - repoURL: https://traefik.github.io/charts
+      chart: traefik
+      targetRevision: 34.0.0
       ref: chart-ufficiale
-      
     - repoURL: https://github.com/Andrea92Fabio/Cluster-Local.git
       targetRevision: HEAD
-      path: argocd
+      path: apps/traefik
       helm:
         valueFiles:
           - $chart-ufficiale/values.yaml
           - values.yaml
-
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    createNamespace: true

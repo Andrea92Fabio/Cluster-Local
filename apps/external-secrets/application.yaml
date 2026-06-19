@@ -1,23 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cilium
+  name: external-secrets
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "-5" # Viene eseguito prima delle altre app nella cartella apps
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
   destination:
     server: https://kubernetes.default.svc
-    namespace: kube-system
+    namespace: external-secrets
   sources:
-    - repoURL: oci://quay.io/cilium/charts
-      chart: cilium
-      targetRevision: 1.19.4
+    - repoURL: https://chart.external-secrets.io
+      chart: external-secrets
+      targetRevision: 0.9.11
       ref: chart-ufficiale
-    - repoURL: https://github.com/Andrea92Fabio/Cluster-Local.git
+    - repoURL: https://github.com/AndreaFabioGrossi/Cluster-Local.git
       targetRevision: HEAD
-      path: apps/cilium
+      path: bootstrap/external-secrets-crd
       helm:
         valueFiles:
           - $chart-ufficiale/values.yaml
@@ -26,3 +26,4 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    CreateNamespace: true

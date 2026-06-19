@@ -1,23 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: harbor
+  name: monitoring
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "5"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   project: default
   destination:
     server: https://kubernetes.default.svc
-    namespace: harbor
+    namespace: monitoring
   sources:
-    - repoURL: https://helm.goharbor.io
-      chart: harbor
-      targetRevision: 1.16.0
+    - repoURL: https://prometheus-community.github.io/helm-charts
+      chart: kube-prometheus-stack
+      targetRevision: 61.3.0
       ref: chart-ufficiale
-    - repoURL: https://github.com/AndreaFabioGrossi/Patata-Bollente.git
+    - repoURL: https://github.com/Andrea92Fabio/Cluster-Local.git
       targetRevision: HEAD
-      path: apps/harbor
+      path: apps/monitoring
       helm:
         valueFiles:
           - $chart-ufficiale/values.yaml
@@ -26,3 +26,5 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    createNamespace: true
+    

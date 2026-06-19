@@ -1,0 +1,40 @@
+# Disabilita componenti non strettamente necessari in locale per risparmiare RAM
+alertmanager:
+  enabled: false
+
+prometheusOperator:
+  resources:
+    limits:
+      memory: "128Mi"
+
+prometheus:
+  enabled: true
+  prometheusSpec:
+    # Richiede i volumi a Longhorn per salvare i dati storici
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: longhorn
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 5Gi
+    # Taglio drastico della memoria di Prometheus (Default è libero e distruttivo)
+    resources:
+      requests:
+        memory: "256Mi"
+      limits:
+        memory: "1Gi"
+
+grafana:
+  enabled: true
+  resources:
+    limits:
+      memory: "256Mi"
+  # Ingress di Traefik per accedere a Grafana via browser
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    hosts:
+      - grafana.local
+      

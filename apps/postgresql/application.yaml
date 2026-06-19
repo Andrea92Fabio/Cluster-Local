@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: vault
+  name: postgresql
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "2"
@@ -9,15 +9,15 @@ spec:
   project: default
   destination:
     server: https://kubernetes.default.svc
-    namespace: vault
+    namespace: database
   sources:
-    - repoURL: https://helm.releases.hashicorp.com
-      chart: vault
-      targetRevision: 0.28.1
+    - repoURL: https://charts.bitnami.com/bitnami
+      chart: postgresql
+      targetRevision: 15.5.2
       ref: chart-ufficiale
-    - repoURL: https://github.com/AndreaFabioGrossi/Patata-Bollente.git
+    - repoURL: https://github.com/Andrea92Fabio/Cluster-Local.git
       targetRevision: HEAD
-      path: apps/vault
+      path: apps/postgresql
       helm:
         valueFiles:
           - $chart-ufficiale/values.yaml
@@ -26,5 +26,5 @@ spec:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+    createNamespace: true
+    

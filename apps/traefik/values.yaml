@@ -1,0 +1,22 @@
+service:
+  type: NodePort
+  ports:
+    web:
+      nodePort: 30080 # Mappata sulla porta 80 del tuo Mac nel file kind-config
+    websecure:
+      nodePort: 30443 # Mappata sulla porta 443 del tuo Mac nel file kind-config
+
+deployment:
+  replicas: 1
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "300m"
+    memory: "256Mi"
+
+ingressRoute:
+  dashboard:
+    enabled: true # Abilita la dashboard di Traefik

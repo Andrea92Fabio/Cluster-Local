@@ -4,7 +4,7 @@ metadata:
   name: longhorn
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
   destination:
@@ -13,9 +13,9 @@ spec:
   sources:
     - repoURL: https://charts.longhorn.io
       chart: longhorn
-      targetRevision: 1.7.2
+      targetRevision: 1.6.2
       ref: chart-ufficiale
-    - repoURL: https://github.com/AndreaFabioGrossi/Patata-Bollente.git
+    - repoURL: https://github.com/Andrea92Fabio/Cluster-Local.git
       targetRevision: HEAD
       path: apps/longhorn
       helm:

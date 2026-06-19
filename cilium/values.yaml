@@ -1,8 +1,8 @@
 identityAllocationMode: crd
-kubeProxyReplacement: true
+kubeProxyReplacement: strict
 routingMode: tunnel
 
-k8sServiceHost: Cluster-Local-control-plane
+k8sServiceHost: cluster-local-1-control-plane 
 k8sServicePort: 6443
 
 ipam:
@@ -18,6 +18,7 @@ operator:
 ingressController:
   enabled: false
 
+# Configurazione Hubble
 hubble:
   enabled: true
   metrics:

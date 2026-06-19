@@ -1,15 +1,14 @@
 global:
-  # Disabilita l'obbligo di HTTPS per i test locali su Mac
   secure: false
 
 server:
   extraArgs:
     - --insecure
 
-  # Crea automaticamente una regola Ingress per accedere dal browser
+  # Configurazione Ingress per Traefik
   ingress:
     enabled: true
-    ingressClassName: traefik # Dice a Traefik di gestire questo indirizzo web
+    ingressClassName: traefik
     hostname: argocd.local
     path: /
     pathType: Prefix
