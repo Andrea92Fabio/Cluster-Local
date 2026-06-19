@@ -34,8 +34,7 @@ up:
 	kubectl wait --for=condition=Ready nodes --all --timeout=90s --context $(CTX)
 
 	@echo "[Fase 3/4] Installazione di ArgoCD usando $(ARGOCD_VALUES)..."
-	helm upgrade --install argocd oci://ghcr.io/argoproj/argo-helm \
-		--chart argo-cd \
+	helm upgrade --install argocd oci://ghcr.io/argoproj/argo-helm/argo-cd \
 		--version 7.3.11 \
 		--namespace argocd --create-namespace \
 		-f $(ARGOCD_VALUES) \
