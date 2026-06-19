@@ -21,17 +21,17 @@ up:
 	@sleep 3
 
 	@echo "[Fase 2/4] Installazione di Cilium CNI usando $(CILIUM_VALUES)..."
-	# Estrazione dinamica dell'IP del Control-Plane (necessario per KinD + Cilium senza kube-proxy)
-	$(eval API_SERVER_IP=$(shell docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(CLUSTER_NAME)-control-plane))
-	@echo "Control-Plane IP rilevato: $(API_SERVER_IP)"
+	# Estrazione dell'IP dinamico direttamente in una variabile di shell (VALUTAZIONE PURE BASH)
+	@API_SERVER_IP=$$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(CLUSTER_NAME)-control-plane); \
+	echo "Control-Plane IP rilevato: $$API_SERVER_IP"; \
 	
 	helm upgrade --install cilium oci://quay.io/cilium/charts/cilium \
 		--version 1.19.4 \
 		--namespace kube-system \
-		-f $(CILIUM_VALUES) \
-		--set k8sServiceHost=$(API_SERVER_IP) \
+		-f cilium/values.yaml \
+		--set k8sServiceHost=$$API_SERVER_IP \
 		--set k8sServicePort=6443 \
-		--kube-context $(CTX)
+		--kube-context kind-$(CLUSTER_NAME)
 	
 	@echo "Attesa che i nodi diventino Ready grazie a Cilium..."
 	kubectl wait --for=condition=Ready nodes --all --timeout=90s --context $(CTX)
