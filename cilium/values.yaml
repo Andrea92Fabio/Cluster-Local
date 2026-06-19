@@ -1,12 +1,14 @@
-identityAllocationMode: crd
 kubeProxyReplacement: true
+identityAllocationMode: crd
 routingMode: tunnel
 
-k8sServiceHost: cluster-local-1-control-plane 
+# 2. Configurazione Integrazione API Server
+k8sServiceHost: ""
 k8sServicePort: 6443
 
+# 3. Gestione IPAM e Mascheramento (Risolve l'isolamento Internet/DNS)
 ipam:
-  mode: cluster-pool
+  mode: kubernetes
 
 bpf:
   masquerade: true
@@ -18,7 +20,6 @@ operator:
 ingressController:
   enabled: false
 
-# Configurazione Hubble
 hubble:
   enabled: true
   metrics:

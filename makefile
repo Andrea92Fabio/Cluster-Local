@@ -34,8 +34,7 @@ up:
 	kubectl wait --for=condition=Ready nodes --all --timeout=90s --context $(CTX)
 
 	@echo "[Fase 3/4] Installazione di ArgoCD usando $(ARGOCD_VALUES)..."
-	helm upgrade --install argocd oci://ghcr.io/argoproj/argo-helm \
-		--chart argo-cd \
+	helm upgrade --install argocd oci://ghcr.io/argoproj/argo-helm/argo-cd \
 		--version 7.3.11 \
 		--namespace argocd --create-namespace \
 		-f $(ARGOCD_VALUES) \
@@ -45,7 +44,7 @@ up:
 	kubectl wait --namespace argocd --for=condition=available deployment/argocd-server --timeout=90s --context $(CTX)
 	@sleep 5
 
-	@echo "⚓ [Fase 4/4] Applicazione della Root App GitOps ($(ROOT_APP))..."
+	@echo "[Fase 4/4] Applicazione della Root App GitOps ($(ROOT_APP))..."
 	kubectl apply -f $(ROOT_APP) --context $(CTX)
 	@echo "\nInfrastruttura avviata! ArgoCD deve sincronizzare il resto del Data Center."
 
