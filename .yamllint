@@ -1,0 +1,6 @@
+rules:
+  line-length:
+    max: 150
+  trailing-spaces: enable
+  new-line-at-end-of-file: enable
+  document-start: disable

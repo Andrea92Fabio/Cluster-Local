@@ -4,7 +4,7 @@ kind: Cluster
 # 1. Disattiva la rete standard di KinD per far funzionare Cilium
 networking:
   disableDefaultCNI: true
-  kubeProxyMode: "none" 
+  kubeProxyMode: "none"
 
 nodes:
 - role: control-plane
@@ -13,11 +13,11 @@ nodes:
 - role: worker
   image: kindest/node:v1.31.2@sha256:18fbefc20a7113353c7b75b5c869d7145a6abd6269154825872dc59c1329912e
   extraPortMappings:
-  - containerPort: 30080 
-    hostPort: 80         
+  - containerPort: 30080
+    hostPort: 80
     protocol: TCP
-  - containerPort: 30443 
-    hostPort: 443        
+  - containerPort: 30443
+    hostPort: 443
     protocol: TCP
   extraMounts:
     - hostPath: ./data/worker1

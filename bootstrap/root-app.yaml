@@ -7,11 +7,11 @@ spec:
   project: default
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd 
+    namespace: argocd
   source:
     repoURL: https://github.com/Andrea92Fabio/Cluster-Local.git
     targetRevision: HEAD
-    path: apps 
+    path: apps
     directory:
       recurse: true
       include: '**/application.yaml'

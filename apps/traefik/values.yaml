@@ -21,7 +21,7 @@ resources:
 ingressRoute:
   dashboard:
     enabled: true
-    matchRule: Host(`traefik.local`) 
+    matchRule: Host(`traefik.local`)
     entryPoints: ["web"]
 
 providers:

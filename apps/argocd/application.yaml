@@ -8,16 +8,16 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
-  sources: 
+  sources:
     - repoURL: oci://ghcr.io/argoproj/argo-helm
       chart: argo-cd
       targetRevision: 7.3.11
       helm:
         valueFiles:
-          - $my-git/apps/argocd/values.yaml 
+          - $my-git/apps/argocd/values.yaml
     - repoURL: https://github.com/Andrea92Fabio/Cluster-Local.git
       targetRevision: HEAD
-      ref: my-git 
+      ref: my-git
   syncPolicy:
     automated:
       prune: true
@@ -25,4 +25,3 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
-      

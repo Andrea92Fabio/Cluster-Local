@@ -1,0 +1,30 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-yaml
+
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+        args: ["-c", ".yamllint"]
+
+  - repo: local
+    hooks:
+      - id: kubeconform
+        name: kubeconform
+        entry: kubeconform
+        language: system
+        files: ^apps/.*\.ya?ml$
+        exclude: .*values\.ya?ml$
+        args:
+          - -strict
+          - -summary
+          - -ignore-missing-schemas
+          - -schema-location
+          - default
+          - -schema-location
+          - https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/
