@@ -15,7 +15,7 @@ spec:
       chart: external-secrets
       targetRevision: 0.9.11
       ref: chart-ufficiale
-    - repoURL: https://github.com/AndreaFabioGrossi/Cluster-Local.git
+    - repoURL: https://github.com/Andrea92Fabio/Cluster-Local.git
       targetRevision: HEAD
       path: apps/external-secrets
       helm:
