@@ -1,10 +1,10 @@
 CLUSTER_NAME = cluster-local-1
 CTX = kind-$(CLUSTER_NAME)
 
-KIND_CONFIG   = kind-config.yaml
-CILIUM_VALUES = cilium/values.yaml
-ARGOCD_VALUES = argocd/values.yaml
-ROOT_APP      = root-app.yaml
+KIND_CONFIG   = bootstrap/kind-config.yaml
+CILIUM_VALUES = bootstrap/cilium-values.yaml
+ARGOCD_VALUES = bootstrap/argocd-values.yaml # 🌟 Mappato correttamente sul file di bootstrap
+ROOT_APP      = bootstrap/root-app.yaml
 
 help:
 	@echo "Comandi per il cluster $(CLUSTER_NAME) (Configurazione Datacenter Ready):"
@@ -73,4 +73,3 @@ port-grafana:
 port-harbor:
 	@echo "Harbor accessibile su: http://localhost:8081"
 	kubectl port-forward svc/harbor -n harbor 8081:80 --context $(CTX)
-	

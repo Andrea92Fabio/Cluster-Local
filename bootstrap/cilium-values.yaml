@@ -1,0 +1,22 @@
+ipam:
+  mode: "kubernetes"
+
+# Sostituzione completa di kube-proxy con Cilium per la gestione del networking, migliorando le prestazioni e la sicurezza
+kubeProxyReplacement: true
+
+# Disabilita i servizi host per evitare conflitti di routing su Docker Desktop
+hostServices:
+  enabled: false
+
+# Protocollo di incapsulamento stabile per l'ambiente virtuale KinD
+tunnelProtocol: "vxlan"
+
+operator:
+  replicas: 1
+
+hubble:
+  enabled: true
+  relay:
+    enabled: true
+  ui:
+    enabled: true

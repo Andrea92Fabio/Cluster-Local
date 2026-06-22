@@ -1,0 +1,29 @@
+global:
+  secure: false
+  logging:
+    level: info
+
+# Mantiene i componenti core attivi e stabili quando Argo passa in auto-gestione
+server:
+  replicas: 1
+  extraArgs:
+    - --insecure
+
+  # Configurazione Ingress per Traefik
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    hostname: argocd.local
+    path: /
+    pathType: Prefix
+
+repoServer:
+  replicas: 1
+
+controller:
+  replicas: 1
+
+redis:
+  enabled: true
+  secretInit:
+    enabled: false

@@ -1,0 +1,15 @@
+global:
+  logging:
+    level: info
+
+server:
+  replicas: 1
+
+repoServer:
+  replicas: 1
+
+controller:
+  replicas: 1
+
+redis:
+  enabled: true
