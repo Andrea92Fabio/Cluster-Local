@@ -3,15 +3,13 @@ kind: Application
 metadata:
   name: argocd-self-managed
   namespace: argocd
-
 spec:
   project: default
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
-
   sources: 
-    - repoURL: oci://ghcr.io/argoproj/argo-helm/argo-cd
+    - repoURL: oci://ghcr.io/argoproj/argo-helm
       chart: argo-cd
       targetRevision: 7.3.11
       helm:
@@ -20,7 +18,6 @@ spec:
     - repoURL: https://github.com/Andrea92Fabio/Cluster-Local.git
       targetRevision: HEAD
       ref: my-git 
-
   syncPolicy:
     automated:
       prune: true
@@ -28,3 +25,4 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+      
