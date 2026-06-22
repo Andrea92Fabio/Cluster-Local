@@ -17,13 +17,13 @@ spec:
       ref: chart-ufficiale
     - repoURL: https://github.com/AndreaFabioGrossi/Cluster-Local.git
       targetRevision: HEAD
-      path: bootstrap/external-secrets-crd
+      path: apps/external-secrets
       helm:
         valueFiles:
-          - $chart-ufficiale/values.yaml
           - values.yaml
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    CreateNamespace: true
+    createNamespace: true 
+    

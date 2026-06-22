@@ -3,6 +3,7 @@ defaultSettings:
   defaultReplicaCount: 1
   replicaSoftAntiAffinity: true
   storageMinimalAvailablePercentage: 15
+  defaultDataPath: "/var/lib/longhorn"
 
 # Ottimizzazione delle risorse per i componenti interni (ridotte al minimo indispensabile)
 longhornManager:

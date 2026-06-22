@@ -4,13 +4,14 @@ metadata:
   name: cert-manager
   namespace: argocd
   annotations:
-    # Wave 1: deve partire subito dopo l'Ingress Controller (Traefik che è a wave 0)
+    
     argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
+
   sources:
     - repoURL: https://charts.jetstack.io
       chart: cert-manager
@@ -21,8 +22,8 @@ spec:
       path: apps/cert-manager
       helm:
         valueFiles:
-          - $chart-ufficiale/values.yaml
           - values.yaml
+          
   syncPolicy:
     automated:
       prune: true

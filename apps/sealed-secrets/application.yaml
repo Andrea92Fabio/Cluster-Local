@@ -4,13 +4,14 @@ metadata:
   name: sealed-secrets
   namespace: argocd
   annotations:
-    # Wave 1: pronto insieme agli altri sistemi di sicurezza prima dei database o applicativi
     argocd.argoproj.io/sync-wave: "1"
+
 spec:
   project: default
   destination:
     server: https://kubernetes.default.svc
-    namespace: kube-system # Di solito si installa in kube-system o in un suo namespace dedicato
+    namespace: kube-system
+
   sources:
     - repoURL: https://bitnami-labs.github.io/sealed-secrets
       chart: sealed-secrets
@@ -21,8 +22,8 @@ spec:
       path: apps/sealed-secrets
       helm:
         valueFiles:
-          - $chart-ufficiale/values.yaml
-          - values.yaml
+          - values.yaml 
+          
   syncPolicy:
     automated:
       prune: true

@@ -20,7 +20,6 @@ spec:
       path: apps/postgresql
       helm:
         valueFiles:
-          - $chart-ufficiale/values.yaml
           - values.yaml
   syncPolicy:
     automated:

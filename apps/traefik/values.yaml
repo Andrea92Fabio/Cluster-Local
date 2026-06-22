@@ -2,9 +2,9 @@ service:
   type: NodePort
   ports:
     web:
-      nodePort: 30080 # Mappata sulla porta 80 del tuo Mac nel file kind-config
+      nodePort: 30080
     websecure:
-      nodePort: 30443 # Mappata sulla porta 443 del tuo Mac nel file kind-config
+      nodePort: 30443
 
 deployment:
   replicas: 1
@@ -17,6 +17,14 @@ resources:
     cpu: "300m"
     memory: "256Mi"
 
+# Ottimizzazione Dashboard e Sicurezza Locale
 ingressRoute:
   dashboard:
-    enabled: true # Abilita la dashboard di Traefik
+    enabled: true
+    matchRule: Host(`traefik.local`) 
+    entryPoints: ["web"]
+
+providers:
+  kubernetesIngress:
+    publishedService:
+      enabled: true

@@ -3,12 +3,12 @@ expose:
   ingress:
     hosts:
       core: harbor.local
-    controller: traefik
     className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
 
 externalURL: http://harbor.local
 
-# Persistenza tramite i volumi locali di Longhorn
 persistence:
   enabled: true
   persistentVolumeClaim:
@@ -28,7 +28,6 @@ persistence:
       storageClass: longhorn
       size: 1Gi
 
-# Portiamo a 1 le repliche di ogni sotto-servizio interno di Harbor
 portal:
   replicaCount: 1
 core:
@@ -40,14 +39,17 @@ registry:
     replicaCount: 1
 chartmuseum:
   replicaCount: 1
+
+# Ottimizzazione e contenimento risorse per i pod interni
 database:
   internal:
     resources:
       limits:
         memory: "256Mi"
+        cpu: "200m"
 redis:
   internal:
     resources:
       limits:
         memory: "128Mi"
-        
+        cpu: "100m"

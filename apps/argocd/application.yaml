@@ -3,18 +3,24 @@ kind: Application
 metadata:
   name: argocd-self-managed
   namespace: argocd
+
 spec:
   project: default
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
-  source:
-    repoURL: oci://ghcr.io/argoproj/argo-helm/argo-cd
-    chart: argo-cd
-    targetRevision: 7.3.11
-    helm:
-      valueFiles:
-        - https://raw.githubusercontent.com/Andrea92Fabio/Cluster-Local/main/apps/argocd/values.yaml
+
+  sources: 
+    - repoURL: oci://ghcr.io/argoproj/argo-helm/argo-cd
+      chart: argo-cd
+      targetRevision: 7.3.11
+      helm:
+        valueFiles:
+          - $values/apps/argocd/values.yaml 
+    - repoURL: https://github.com/Andrea92Fabio/Cluster-Local.git
+      targetRevision: main
+      ref: values 
+
   syncPolicy:
     automated:
       prune: true

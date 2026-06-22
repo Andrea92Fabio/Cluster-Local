@@ -1,12 +1,9 @@
-# Configurazione di autenticazione base per sviluppo locale
 auth:
   database: my_database
   username: my_user
-  # In produzione useresti Sealed Secrets, qui ne definiamo una di fallback per il bootstrap rapido
   password: "PasswordSicura123" 
 
 primary:
-  # Richiede lo storage a Longhorn
   persistence:
     enabled: true
     storageClass: longhorn
@@ -20,3 +17,5 @@ primary:
       cpu: "300m"
       memory: "256Mi"
       
+metrics:
+  enabled: false
