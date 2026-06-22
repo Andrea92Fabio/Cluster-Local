@@ -3,12 +3,12 @@ CTX = kind-$(CLUSTER_NAME)
 
 KIND_CONFIG   = bootstrap/kind-config.yaml
 CILIUM_VALUES = bootstrap/cilium-values.yaml
-ARGOCD_VALUES = bootstrap/argocd-values.yaml # 🌟 Mappato correttamente sul file di bootstrap
+ARGOCD_VALUES = bootstrap/argocd-values.yaml
 ROOT_APP      = bootstrap/root-app.yaml
 
 help:
 	@echo "Comandi per il cluster $(CLUSTER_NAME) (Configurazione Datacenter Ready):"
-	@echo "  make up           - 1. KinD -> 2. Cilium (local values) -> 3. ArgoCD (local values) -> 4. RootApp"
+	@echo "  make up           - 1. KinD -> 2. Cilium -> 3. ArgoCD -> 4. RootApp"
 	@echo "  make down         - Cancella tutto il cluster"
 	@echo "  make status       - Controlla lo stato di nodi, risorse e pod"
 	@echo "  make port-argo    - Avvia il port-forward temporaneo per ArgoCD"
@@ -30,8 +30,8 @@ up:
 		--set k8sServicePort=6443 \
 		--kube-context $(CTX)
 
-	@echo "Attesa che i nodi diventino Ready grazie a Cilium..."
-	kubectl wait --for=condition=Ready nodes --all --timeout=90s --context $(CTX)
+	@echo "⏳ Attesa che i Pod core di Cilium siano completamente Running ed operativi..."
+	kubectl wait --namespace kube-system --for=condition=Ready pod -l k8s-app=cilium --timeout=120s --context $(CTX)
 
 	@echo "[Fase 3/4] Installazione di ArgoCD usando $(ARGOCD_VALUES)..."
 	helm upgrade --install argocd oci://ghcr.io/argoproj/argo-helm/argo-cd \
@@ -40,13 +40,13 @@ up:
 		-f $(ARGOCD_VALUES) \
 		--kube-context $(CTX)
 
-	@echo "Attesa che il server di ArgoCD sia pronto..."
-	kubectl wait --namespace argocd --for=condition=available deployment/argocd-server --timeout=90s --context $(CTX)
-	@sleep 5
+	@echo "⏳ Attesa che TUTTI i servizi vitali di ArgoCD siano pronti a comunicare..."
+	kubectl wait --namespace argocd --for=condition=available deployment/argocd-server --timeout=120s --context $(CTX)
+	kubectl wait --namespace argocd --for=condition=available deployment/argocd-repo-server --timeout=120s --context $(CTX)
 
 	@echo "⚓ [Fase 4/4] Applicazione della Root App GitOps ($(ROOT_APP))..."
 	kubectl apply -f $(ROOT_APP) --context $(CTX)
-	@echo "\nInfrastruttura avviata! ArgoCD deve sincronizzare il resto del Data Center."
+	@echo "\n✨ Infrastruttura avviata in modo sicuro! Lancia 'make status' per verificare."
 
 down:
 	@echo "Rimozione del cluster KinD '$(CLUSTER_NAME)'..."

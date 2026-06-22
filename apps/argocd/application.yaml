@@ -16,10 +16,10 @@ spec:
       targetRevision: 7.3.11
       helm:
         valueFiles:
-          - $values/apps/argocd/values.yaml 
+          - $my-git/apps/argocd/values.yaml 
     - repoURL: https://github.com/Andrea92Fabio/Cluster-Local.git
-      targetRevision: main
-      ref: values 
+      targetRevision: HEAD
+      ref: my-git 
 
   syncPolicy:
     automated:

@@ -5,23 +5,24 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "-5"
+
 spec:
   project: default
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
+
   sources:
     - repoURL: oci://quay.io/cilium/charts
       chart: cilium
       targetRevision: 1.19.4
-      ref: chart-ufficiale
-    - repoURL: https://github.com/Andrea92Fabio/Cluster-Local.git
-      targetRevision: HEAD
-      path: apps/cilium
       helm:
         valueFiles:
-          - $chart-ufficiale/values.yaml
-          - values.yaml
+          - $my-git/apps/cilium/values.yaml
+    - repoURL: https://github.com/Andrea92Fabio/Cluster-Local.git
+      targetRevision: HEAD
+      ref: my-git
+
   syncPolicy:
     automated:
       prune: true
