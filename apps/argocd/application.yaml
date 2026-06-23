@@ -1,23 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd-self-managed
+  name: argocd
   namespace: argocd
 spec:
   project: default
+
+  source:
+    repoURL: https://argoproj.github.io/argo-helm
+    chart: argo-cd
+    targetRevision: 7.3.11
+    helm:
+      valueFiles:
+        - values.yaml
+
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
-  sources:
-    - repoURL: https://argoproj.github.io/argo-helm
-      chart: argo-cd
-      targetRevision: 7.3.11
-      helm:
-        valueFiles:
-          - $my-git/apps/argocd/values.yaml
-    - repoURL: https://github.com/Andrea92Fabio/Cluster-Local.git
-      targetRevision: HEAD
-      ref: my-git
+
   syncPolicy:
     automated:
       prune: true

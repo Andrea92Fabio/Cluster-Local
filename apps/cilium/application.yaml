@@ -9,26 +9,21 @@ metadata:
 spec:
   project: default
 
+  source:
+    repoURL: https://helm.cilium.io
+    chart: cilium
+    targetRevision: 1.19.4
+    helm:
+      valueFiles:
+        - values.yaml
+
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
-
-  sources:
-    - repoURL: https://helm.cilium.io
-      chart: cilium
-      targetRevision: 1.19.4
-      helm:
-        valueFiles:
-          - $my-git/apps/cilium/values.yaml
-
-    - repoURL: https://github.com/Andrea92Fabio/Cluster-Local.git
-      targetRevision: HEAD
-      ref: my-git
 
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-
     syncOptions:
       - ServerSideApply=true

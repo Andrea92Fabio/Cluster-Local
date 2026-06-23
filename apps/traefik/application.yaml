@@ -8,20 +8,18 @@ metadata:
 
 spec:
   project: default
+
+  source:
+    repoURL: https://traefik.github.io/charts
+    chart: traefik
+    targetRevision: 34.0.0
+    helm:
+      valueFiles:
+        - values.yaml
+
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik
-
-  sources:
-    - repoURL: https://traefik.github.io/charts
-      chart: traefik
-      targetRevision: 34.0.0
-      helm:
-        valueFiles:
-          - $my-git/apps/traefik/values.yaml
-    - repoURL: https://github.com/Andrea92Fabio/Cluster-Local.git
-      targetRevision: HEAD
-      ref: my-git
 
   syncPolicy:
     automated:

@@ -5,17 +5,20 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: argocd
+
   source:
     repoURL: https://github.com/Andrea92Fabio/Cluster-Local.git
     targetRevision: HEAD
     path: apps
-    directory:
-      recurse: true
-      include: '**/application.yaml'
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

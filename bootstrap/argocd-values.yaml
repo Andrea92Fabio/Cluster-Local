@@ -4,6 +4,10 @@ global:
 
 server:
   replicas: 1
+  extraArgs:
+    - --insecure
+  service:
+    type: ClusterIP
 
 repoServer:
   replicas: 1

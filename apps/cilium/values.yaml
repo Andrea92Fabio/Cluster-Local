@@ -1,47 +1,16 @@
-identityAllocationMode: crd
 kubeProxyReplacement: true
 
-# Configurazione di routing sicura per Docker Desktop (Overlay VXLAN)
-routingMode: tunnel
-tunnelProtocol: "vxlan"
-
-k8sServicePort: 6443
-
-# Allineato rigorosamente al funzionamento interno di KinD
 ipam:
-  mode: "kubernetes"
+  mode: kubernetes
 
-bpf:
-  masquerade: true
-  disableChecksumOffloading: true
-
-cni:
-  exclusive: false
-socketLB:
-  hostNamespaceOnly: true
+tunnelProtocol: vxlan
 
 operator:
   replicas: 1
 
-ingressController:
-  enabled: false
-
-# Configurazione Hubble Avanzata
 hubble:
   enabled: true
-  metrics:
-    enabled:
-      - dns
-      - drop
-      - tcp
-      - flow
-      - icmp
-      - http
   relay:
     enabled: true
   ui:
     enabled: true
-    backend:
-      replicas: 1
-    frontend:
-      replicas: 1

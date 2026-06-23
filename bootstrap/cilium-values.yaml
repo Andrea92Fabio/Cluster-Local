@@ -1,8 +1,8 @@
-ipam:
-  mode: "kubernetes"
-
 # Sostituzione completa di kube-proxy con Cilium per la gestione del networking, migliorando le prestazioni e la sicurezza
 kubeProxyReplacement: true
+
+ipam:
+  mode: "kubernetes"
 
 # Disabilita i servizi host per evitare conflitti di routing su Docker Desktop
 hostServices:
