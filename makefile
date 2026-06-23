@@ -48,6 +48,9 @@ up:
 	kubectl apply -f $(ROOT_APP) --context $(CTX)
 	@echo "\n✨ Infrastruttura avviata in modo sicuro! Lancia 'make status' per verificare."
 
+	@echo "\n🔐 Credenziali iniziali di ArgoCD:"
+	kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo ""
+
 down:
 	@echo "Rimozione del cluster KinD '$(CLUSTER_NAME)'..."
 	kind delete cluster --name $(CLUSTER_NAME)

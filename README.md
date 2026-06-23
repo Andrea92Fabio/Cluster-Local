@@ -5,3 +5,5 @@
 
 - kubectl -n kube-system exec daemonset/cilium -- cilium status
 - 127.0.0.1 harbor.local
+
+- kubectl get apps -n argocd
