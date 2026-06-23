@@ -27,3 +27,9 @@ redis:
   enabled: true
   secretInit:
     enabled: false
+
+configs:
+  cm:
+    resource.customizations.ignoreDifferences.apps_DaemonSet: |
+      jqPathExpressions:
+        - .spec.template.spec.securityContext.appArmorProfile
